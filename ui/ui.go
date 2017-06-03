@@ -41,24 +41,6 @@ func CheckTrainStatus(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ExportHandler(w http.ResponseWriter, r *http.Request) {
-	FileName := staticPath + "/ftel_faq.xlsx"
-	log.Info("Path is: ", FileName)
-	err := Export(FileName)
-	if err != nil {
-		log.Error("Fail to export excel: ", err.Error())
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		return
-	}
-
-	log.Info("redirect")
-	http.Redirect(w, r, "/resources/ftel_faq.xlsx", http.StatusFound)
-
-	go DeleteFile(FileName, 60)
-
-	return
-}
-
 func Run() {
 	r := mux.NewRouter()
 
@@ -84,7 +66,6 @@ func Run() {
 	r.HandleFunc("/trainstatus", CheckTrainStatus)
 
 	r.HandleFunc("/help", HelpHandler)
-	r.HandleFunc("/export", ExportHandler)
 
 	r.HandleFunc("/unsafe", UnsafeHandler)
 

@@ -15,29 +15,17 @@
                     </div>
                 </div>
 
-                 <div class="form-group row">
-                    <label class="col-2 col-form-label text-center">Intent Name</label>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-center">Trinh Answer</label>
                     <div class="col-10">
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" checked="true" value="0">&nbsp Trinh</label>
-                        </div>
-                            
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="1">&nbsp Bờm</label>
-                        </div>
-                            
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="2">&nbsp Cả 2</label>
-                        </div>
+                        <textarea name="answer" class="form-control" rows="5" id="answer1" placeholder="Enter answer"></textarea>
                     </div>
                 </div>
 
-                
-
                 <div class="form-group row">
-                    <label class="col-2 col-form-label text-center">Answer</label>
+                    <label class="col-2 col-form-label text-center">Bom Answer</label>
                     <div class="col-10">
-                        <textarea name="answer" class="form-control" rows="10" id="answer" placeholder="Enter answer"></textarea>
+                        <textarea name="answer" class="form-control" rows="5" id="answer2" placeholder="Enter answer"></textarea>
                     </div>
                 </div>
 
@@ -97,8 +85,9 @@
 
             var data = $("#samples input");
             var intent = $("#intent").val();
-            var instance = $("input:radio[name ='optradio']:checked").val();
-            var answer = $("#answer").val();
+            // var instance = $("input:radio[name ='optradio']:checked").val();
+            var trinhAnswer = $("#answer1").val();
+            var bomAnswer = $("#answer2").val();
 
             var samples = [];
             $.each(data, function(i, v) {
@@ -107,16 +96,17 @@
                     samples.push('{\"id\": 0, \"question\":' + val + ', \"intent_id\":0}');
                 }
             });
-            answer = JSON.stringify(answer, escape);
+            // trinhAnswer = JSON.stringify(trinhAnswer, escape);
+            // bomAnswer = JSON.stringify(bomAnswer, escape);
 
             var dataStr = '{' +
                 '"id": 0, ' +
                 '"intent":"' + intent + '",' +
-                '"instance":' + instance + ','+
-                '"answer":' + answer + ',' +
+                '"trinh_answer":"' + trinhAnswer + '",' +
+                '"bom_answer":"' + bomAnswer + '",' +
                 '"questions":[' + samples + ']' +
                 '}';
-            if (samples.length == 0 || intent == '' || answer == '') {
+            if (samples.length == 0 || intent == '' || trinhAnswer == '' || bomAnswer == '') {
                 alert("Please Fill All Fields");
             } else {
                 $("#save").attr("disabled", true);

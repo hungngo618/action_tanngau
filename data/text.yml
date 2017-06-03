@@ -22,7 +22,12 @@ vi:
     - :( Xin lỗi, em chưa rõ câu hỏi của @gender. Phiền @gender hỏi lại cụ thể hơn, ví dụ "FPT Techday là gì?"
     - :( Xin lỗi, em chưa hiểu ý @gender. Phiền @gender hỏi lại cụ thể hơn, ví dụ "Diễn giả có những ai?"
 
-  not_found_answer:
+  trinh_not_found_answer:
     - "Em không hiểu anh ơi"
     - "Em không nói đâu"
     - "Đố anh biết đó"
+
+  bom_not_found_answer:
+    - "Em quên rồi anh ơi"
+    - "Anh ơi em chưa rõ"
+    - "Có câu hỏi nào khác thú vị hơn không anh?"

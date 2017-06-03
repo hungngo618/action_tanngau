@@ -14,8 +14,8 @@
                     <tr class="row col-sm-12 px-0 mx-0">
                         <th class="col-sm-1 text-center">ID</th>
                         <th class="col-sm-3 text-center">Intent</th>
-                        <th class="col-sm-1 text-center">Instance</th>
-                        <th class="col-sm-5 text-center">Answer</th>
+                        <th class="col-sm-3 text-center">Trinh Answer</th>
+                        <th class="col-sm-3 text-center">Bom Answer</th>
                         <th class="col-sm-2 text-center">Action</th>
                     </tr>
                 </thead>
@@ -24,8 +24,8 @@
                     <tr class="row col-sm-12 table-active px-0 mx-0">
                         <td class="col-sm-1">{{ $idx }}</td>
                         <td class="col-sm-3">{{ $faq.IntentName }}</td>
-                        <td class="col-sm-1">{{ $faq.Instance}}</td>
-                        <td class="col-sm-5">{{ $faq.Answer }}</td>
+                        <td class="col-sm-3">{{ $faq.TrinhAnswer}}</td>
+                        <td class="col-sm-3">{{ $faq.BomAnswer }}</td>
                         <td class="col-sm-2">
                             <button class="btn btn-primary btn-md" style="margin-right: 0.5em;" onclick="location.href='/editview?id={{$faq.ID}}';">Edit</button>
                             <button class="btn btn-danger btn-md delete" id="delete" ic-delete-from="/faq/{{$faq.ID}}">Delete</button>

@@ -5,16 +5,16 @@ import (
 )
 
 type FAQ struct {
-	ID         int        `json:"id"`
-	Instance 	int 	  `json: "instance"`
-	IntentName string     `json:"intent"`
-	Answer     string     `json:"answer"`
-	Questions  []Question `json:"questions"`
+	ID         int             `json:"id"`
+	IntentName string          `json:"intent"`
+	TrinhAnswer     string     `json:"trinh_answer"`
+	BomAnswer     string       `json:"bom_answer"`
+	Questions  []Question      `json:"questions"`
 }
 
 
 func InsertFAQ(faq FAQ) error {
-	query := "INSERT INTO intent_answer(instance, intent, answer) VALUES(?,?,?);"
+	query := "INSERT INTO intent_answer(intent, trinh_answer, bom_answer) VALUES(?,?,?);"
 
 	stmt, err := DB.Prepare(query)
 	if err != nil {
@@ -23,7 +23,7 @@ func InsertFAQ(faq FAQ) error {
 	}
 	defer stmt.Close()
 
-	res, err := stmt.Exec(faq.Instance, faq.IntentName, faq.Answer)
+	res, err := stmt.Exec(faq.IntentName, faq.TrinhAnswer, faq.BomAnswer)
 	if err != nil {
 		log.Error("failed to execute Insert FAQ query: ", err)
 		return err
@@ -56,7 +56,7 @@ func InsertFAQ(faq FAQ) error {
 }
 
 func UpdateFAQ(faq FAQ) error {
-	query := "UPDATE intent_answer SET instance=?, intent=?, answer=? WHERE id=?;"
+	query := "UPDATE intent_answer SET intent=?, trinh_answer=?, bom_answer=? WHERE id=?;"
 
 	stmt, err := DB.Prepare(query)
 	if err != nil {
@@ -66,7 +66,7 @@ func UpdateFAQ(faq FAQ) error {
 	defer stmt.Close()
 
 	//fmt.Printf("%d %s %s %d", faq.Instance, faq.IntentName, faq.Answer, faq.ID)
-	_, err = stmt.Exec(faq.Instance, faq.IntentName, faq.Answer, faq.ID)
+	_, err = stmt.Exec(faq.IntentName, faq.TrinhAnswer, faq.BomAnswer, faq.ID)
 	if err != nil {
 		log.Error("failed to execute Update FAQ query: ", err)
 		return err
@@ -170,7 +170,7 @@ func GetAllFAQs() ([]FAQ, error) {
 
 	for rows.Next() {
 		var u FAQ
-		err := rows.Scan(&u.ID, &u.Instance, &u.IntentName, &u.Answer)
+		err := rows.Scan(&u.ID, &u.IntentName, &u.TrinhAnswer, &u.BomAnswer)
 		if err != nil {
 			log.Error("failed to scan FAQ: ", err)
 			return faqs, err
@@ -197,7 +197,7 @@ func GetAnswerFor(intent string) string {
 		return ""
 	}
 
-	return faq.Answer
+	return faq.TrinhAnswer + faq.BomAnswer
 }
 
 func GetAnswerByIntent(intent string) (FAQ, error) {
@@ -220,7 +220,7 @@ func GetAnswerByIntent(intent string) (FAQ, error) {
 
 	for rows.Next() {
 		var u FAQ
-		err := rows.Scan(&u.ID, &u.Instance, &u.IntentName, &u.Answer)
+		err := rows.Scan(&u.ID, &u.IntentName, &u.TrinhAnswer, &u.BomAnswer)
 		if err != nil {
 			log.Error("failed to scan FAQ: ", err)
 			return FAQ{}, err
@@ -234,7 +234,7 @@ func GetAnswerByIntent(intent string) (FAQ, error) {
 
 func GetFAQByID(id int) (FAQ, error) {
 	var faq FAQ
-	err := DB.QueryRow("SELECT * FROM `intent_answer` WHERE id=?", id).Scan(&faq.ID, &faq.Instance, &faq.IntentName, &faq.Answer)
+	err := DB.QueryRow("SELECT * FROM `intent_answer` WHERE id=?", id).Scan(&faq.ID, &faq.IntentName, &faq.TrinhAnswer, &faq.BomAnswer)
 
 	if err != nil {
 		log.Error("failed to query faq by ID: ", err)

@@ -18,27 +18,16 @@
                     </div>
                 </div>
 
-                 <div class="form-group row">
-                    <label class="col-2 col-form-label text-center">Intent Name</label>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-center">Trinh nswer</label>
                     <div class="col-10">
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" {{if eq .Instance 0}} checked="true" {{end}} value="0">&nbsp Trinh</label>
-                        </div>
-                            
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" {{if eq .Instance 1}} checked="true" {{end}} value="1">&nbsp Bờm</label>
-                        </div>
-                            
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" {{if eq .Instance 2}} checked="true" {{end}} value="2">&nbsp Cả 2</label>
-                        </div>
+                        <textarea name="answer" class="form-control" rows="5" id="answer1">{{.TrinhAnswer}}</textarea>
                     </div>
                 </div>
-
                 <div class="form-group row">
-                    <label class="col-2 col-form-label text-center">Answer</label>
+                    <label class="col-2 col-form-label text-center">Bom Answer</label>
                     <div class="col-10">
-                        <textarea name="answer" class="form-control" rows="10" id="answer">{{.Answer}}</textarea>
+                        <textarea name="answer" class="form-control" rows="5" id="answer2">{{.BomAnswer}}</textarea>
                     </div>
                 </div>
 
@@ -99,10 +88,10 @@
     $(document).ready(function() {
         $("#save").click(function() {
             var data = $("#samples input");
-            var intent = $("#intent").val();
-            var instance = $("input:radio[name ='optradio']:checked").val();
-            var answer = $("#answer").val();
             var faqId = $("#id").val();
+            var intent = $("#intent").val();
+            var trinhAnswer = $("#answer1").val();
+            var bomAnswer = $("#answer2").val();
 
             var samples = [];
             $.each(data, function(i, v) {
@@ -112,16 +101,17 @@
                 }
             });
 
-            answer = JSON.stringify(answer, escape);
+            // trinhAnswer = JSON.stringify(trinhAnswer, escape);
+            // bomAnswer = JSON.stringify(bomAnswer, escape);
 
             var dataStr = '{' +
                 '"id": ' + faqId + ', ' +
                 '"intent":"' + intent + '",' +
-                '"instance":' + instance + ','+
-                '"answer":' + answer + ',' +
+                '"trinh_answer":"' + trinhAnswer + '",' +
+                '"bom_answer":"' + bomAnswer + '",' +
                 '"questions":[' + samples + ']' +
                 '}';
-            if (samples.length == 0 || intent == '' || answer == '') {
+            if (samples.length == 0 || intent == '' || trinhAnswer == '' || bomAnswer == '') {
                 alert("Please Fill All Fields");
             } else {
                 $("#save").attr("disabled", true);

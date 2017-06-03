@@ -55,7 +55,7 @@ func NewFAQHandler(w http.ResponseWriter, r *http.Request) {
 		return
     }
 
-	if faq.IntentName == "" || faq.Answer == "" || len(faq.Questions) == 0 {
+	if faq.IntentName == "" || faq.TrinhAnswer == "" || faq.BomAnswer == "" || len(faq.Questions) == 0 {
 		log.Error("IntentName or Answer of Questions not found")
 		fmt.Fprintln(w, "IntentName or Answer of Questions not found")
 		
@@ -128,7 +128,8 @@ func FAQEditViewRender(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//log.Error(faq)
-	faq.Answer = strings.TrimSpace(faq.Answer)
+	faq.TrinhAnswer = strings.TrimSpace(faq.TrinhAnswer)
+	faq.BomAnswer = strings.TrimSpace(faq.BomAnswer)
 	faqs := []db.FAQ{faq}
 
 	var result = make(map[string]interface{})
@@ -176,7 +177,7 @@ func FAQEditHandler(w http.ResponseWriter, r *http.Request) {
    	
     var faq db.FAQ
     err = json.Unmarshal(body, &faq)
-	fmt.Println("faq: ", faq)
+	//fmt.Println("faq: ", faq)
     if err != nil {
         log.Error("failed to Unmarshal edit Faq request ", err)
         http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
@@ -298,15 +299,12 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 
 	question := m["text"]
 	user := m["username"]
+	assistant := m["assistant"]
 
-	if question == "" || user == ""{
-		log.Error("Failed to get question or username")
+	if question == "" || user == "" || assistant == ""{
+		log.Error("Failed to get question or username or assistants")
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
-	}
-
-	if !strings.Contains(question, user) {
-		question = user + " ơi " + question
 	}
 
 	log.Infoln("question: ", question)
@@ -321,11 +319,22 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 	}
 	var result map[string]interface{}
 	result = make(map[string]interface{})
-	if faq.Answer == ""{
-		result["text"] = dialog.T("not_found_answer")
-	}else{
-		result["text"] = faq.Answer
+
+	if assistant == "trinh" {
+		if faq.TrinhAnswer == ""{
+			result["text"] = dialog.T("trinh_not_found_answer")
+		}else{
+			result["text"] = faq.TrinhAnswer
+		}
+	}else {
+		if faq.BomAnswer == ""{
+			result["text"] = dialog.T("bom_not_found_answer")
+		}else{
+			result["text"] = faq.BomAnswer
+		}
 	}
+
+	//fmt.Println("reply: ", result["text"])
 
 	result["finish"] = true
 
