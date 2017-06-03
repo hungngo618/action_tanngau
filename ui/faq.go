@@ -281,12 +281,35 @@ func SearchFAQByIntentHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
-	question := r.FormValue("question")
-	if question == "" {
-		log.Error("Form value not have intent")
+	var m map[string]string
+	m = make(map[string]string)
+
+	body, err :=ioutil.ReadAll(r.Body)
+	if err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
+	err = json.Unmarshal(body, &m)
+
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	question := m["text"]
+	user := m["username"]
+
+	if question == "" || user == ""{
+		log.Error("Failed to get question or username")
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	if !strings.Contains(question, user) {
+		question = user + " ơi " + question
+	}
+
+	log.Infoln("question: ", question)
 
 	i := intent.Detect(question)
 
@@ -304,12 +327,15 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 		result["text"] = faq.Answer
 	}
 
+	result["finish"] = true
+
 	json, err := json.Marshal(result)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintln(w, string(json))
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, string(json))
 }
 //Function to retrain all faqs
 func FAQTrain(w http.ResponseWriter, r *http.Request) {
