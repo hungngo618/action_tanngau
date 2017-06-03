@@ -75,6 +75,6 @@ func Run() {
 	//chain := alice.New(author).Then(r)
 	http.Handle("/", r)
 
-	log.Info("FAQ UI is running at: ", config.UI.Port)
+	fmt.Println("FAQ UI is running at: ", config.UI.Port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", config.UI.Port), nil))
 }

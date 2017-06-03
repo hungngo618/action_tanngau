@@ -33,21 +33,7 @@ func init() {
 
 func main() {
 
-	ui.Init(&config.UI)
-	go ui.Run()
 
-	ftel = dialog.New()
-
-	bot := fbbot.New(config.Bot.Port, config.Bot.VerifyToken, config.Bot.PageAccessToken)
-
-	tracker := new(dialog.ActivityTracker)
-
-	bot.AddMessageHandler(tracker)
-	bot.AddEchoHandler(tracker)
-	bot.AddPostbackHandler(tracker)
-
-	bot.AddMessageHandler(ftel)
-	bot.AddPostbackHandler(ftel)
 
 	switch config.Bot.LogLevel {
 	case "debug":
@@ -70,7 +56,7 @@ func main() {
 	// defer debugLogWriter.Close()
 	// debug.Init(bot, debugLogWriter)
 
-	bot.Run()
-
+	ui.Init(&config.UI)
+	ui.Run()
 
 }
