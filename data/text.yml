@@ -1,0 +1,28 @@
+vi:
+  error:
+    - "Xin lỗi @gender, hiện tại hệ thống đang gặp lỗi."
+  no_click_button:
+    - "@gender vui lòng chọn một trong các lựa chọn ở trên"
+  back_faq:
+    - "Vậy @gender @full_name vui lòng tiếp tục đặt câu hỏi khác"
+  welcome_first_time:
+    - "FPT Techday Bot rất hân hạnh được phục vụ @gender @full_name. Xin mời @gender đặt câu hỏi về Ngày hội công nghệ FPT Techday 2017"
+  welcome_first_time_answer:
+    - "FPT Techday Bot rất hân hạnh được phục vụ @gender @full_name."
+  welcome_second_time:
+    - "Rất vui được gặp lại @gender @full_name, em có thể phục vụ gì @gender không ạ?"
+  welcome_second_time_answer:
+    - "Em rất vui được gặp lại @gender @full_name"
+  goodbye:
+    - "Chào tạm biệt!"
+    - "Hẹn gặp lại!"
+  no_answer:
+    - "Xin lỗi @gender, rất tiếc hiện tại em chưa thể giải đáp được câu hỏi này"
+  dontunderstand:
+    - :( Xin lỗi, em chưa rõ câu hỏi của @gender. Phiền @gender hỏi lại cụ thể hơn, ví dụ "FPT Techday là gì?"
+    - :( Xin lỗi, em chưa hiểu ý @gender. Phiền @gender hỏi lại cụ thể hơn, ví dụ "Diễn giả có những ai?"
+
+  not_found_answer:
+    - "Em không hiểu anh ơi"
+    - "Em không nói đâu"
+    - "Đố anh biết đó"
