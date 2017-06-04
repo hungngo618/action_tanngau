@@ -61,6 +61,7 @@ func Run() {
 	r.HandleFunc("/search", SearchFAQByIntentHandler).Methods("POST", "GET")
 	r.HandleFunc("/qna", SearchAnswerByQuestion).Methods("POST", "GET")
 
+
 	r.HandleFunc("/train", TrainHandler)
 
 	r.HandleFunc("/trainstatus", CheckTrainStatus)

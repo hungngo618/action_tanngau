@@ -285,6 +285,9 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 	var m map[string]string
 	m = make(map[string]string)
 
+	var result map[string]interface{}
+	result = make(map[string]interface{})
+
 	body, err :=ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
@@ -301,9 +304,18 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 	user := m["username"]
 	assistant := m["assistant"]
 
-	if question == "" || user == "" || assistant == ""{
-		log.Error("Failed to get question or username or assistants")
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+	if question == "" || user == "" || assistant == "" || question == ""{
+		result["text"] = "Xin lỗi em chưa nghe rõ"
+		result["finish"] = true
+
+		json, err := json.Marshal(result)
+		if err != nil {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, string(json))
+
 		return
 	}
 
@@ -317,8 +329,7 @@ func SearchAnswerByQuestion(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	var result map[string]interface{}
-	result = make(map[string]interface{})
+
 
 	if assistant == "trinh" {
 		if faq.TrinhAnswer == ""{
